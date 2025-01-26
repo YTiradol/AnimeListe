@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AnimeListe</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <h1>AnimeListe</h1>
+
+        <!-- Navigation -->
+        <!-- Barre de Menu en Bas -->
+<div class="bottom-menu">
+    <button onclick="showAddAnime()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-square">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="12" y1="8" x2="12" y2="16"></line>
+            <line x1="8" y1="12" x2="16" y2="12"></line>
+        </svg>
+    </button>
+    <button onclick="showAnimeList()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list">
+            <line x1="8" y1="6" x2="21" y2="6"></line>
+            <line x1="8" y1="12" x2="21" y2="12"></line>
+            <line x1="8" y1="18" x2="21" y2="18"></line>
+            <circle cx="3" cy="6" r="1"></circle>
+            <circle cx="3" cy="12" r="1"></circle>
+            <circle cx="3" cy="18" r="1"></circle>
+        </svg>
+    </button>
+    <button onclick="showStatistics()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bar-chart">
+            <rect x="3" y="12" width="4" height="9"></rect>
+            <rect x="10" y="6" width="4" height="15"></rect>
+            <rect x="17" y="3" width="4" height="18"></rect>
+        </svg>
+    </button>
+    <button onclick="showImportExport()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-up-down">
+            <path d="M7 11l-4-4 4-4M17 13l4 4-4 4M3 7h18M3 17h18"></path>
+        </svg>
+    </button>
+</div>
+
+       <!-- Interface d'ajout d'anime -->
+<section id="addAnimeSection" class="card" style="display: none;">
+    <h2>Ajouter un Anime</h2>
+    <div class="form-group">
+        <input type="text" id="animeInput" placeholder="Entrez le nom de l'anime" required>
+    </div>
+    <div class="form-group">
+        <input type="file" id="animeImageInput" accept="image/*" required>
+    </div>
+    <div class="form-group">
+        <input type="number" id="nbEpisodes" placeholder="Nombre d'épisodes" min="0" required>
+    </div>
+    <div class="form-group">
+        <select id="animeType" required>
+            <option value="série">Série</option>
+            <option value="film">Film</option>
+            <option value="webtoon">Webtoon</option> <!-- Ajout de l'option webtoon -->
+        </select>
+    </div>
+    <div class="form-group">
+        <select id="animeStatus" required>
+            <option value="fini">Fini</option>
+            <option value="en cours">En cours</option>
+            <option value="inconnu">Inconnu</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <input type="number" id="graphicsRating" placeholder="Graphismes (0-10)" min="0" max="10" required>
+    </div>
+    <div class="form-group">
+        <input type="number" id="charactersRating" placeholder="Personnages (0-10)" min="0" max="10" required>
+    </div>
+    <div class="form-group">
+        <input type="number" id="storyRating" placeholder="Histoire (0-10)" min="0" max="10" required>
+    </div>
+    <div class="form-group">
+        <input type="number" id="emotionRating" placeholder="Émotion (0-10)" min="0" max="10" required>
+    </div>
+    <div class="form-group">
+        <input type="number" id="generalRating" placeholder="Général (0-10)" min="0" max="10" required>
+    </div>
+    <button onclick="addAnime()">Ajouter Anime</button>
+</section>
+
+        <!-- Interface d'affichage de la liste -->
+        <section id="animeListSection">
+            <h2>Liste des Anime</h2>
+            <div class="dropdown">
+                <button class="dropbtn" id="sortButton">Trier</button>
+                <div class="dropdown-content">
+                    <a href="#" onclick="sortAnime('alpha')">Par Alphabétique</a>
+                    <a href="#" onclick="sortAnime('emotion')">Par Émotion</a>
+                    <a href="#" onclick="sortAnime('story')">Par Histoire</a>
+                    <a href="#" onclick="sortAnime('graphics')">Par Graphismes</a>
+                    <a href="#" onclick="sortAnime('characters')">Par Personnages</a>
+                    <a href="#" onclick="sortAnime('general')">Par Général</a>
+                    <a href="#" onclick="sortAnime('average')">Par Moyenne</a>
+                </div>
+            </div>
+            
+            <div class="dropdown">
+                <button class="dropbtn" id="filterButton">Filtrer</button>
+                <div class="dropdown-content">
+                    <a href="#" onclick="filterAnime('en cours')">En Cours</a>
+                    <a href="#" onclick="filterAnime('inconnu')">Inconnu</a>
+                    <a href="#" onclick="filterAnime('tous')">Tous</a>
+                </div>
+            </div>
+            
+            <div class="dropdown">
+                <button class="dropbtn" id="filterTypeButton">Filtrer par Type</button>
+                <div class="dropdown-content">
+                    <a href="#" onclick="filterType('série')">Série</a>
+                    <a href="#" onclick="filterType('film')">Film</a>
+                    <a href="#" onclick="filterType('webtoon')">Webtoon</a>
+                    <a href="#" onclick="filterType('tout')">Tout</a>
+                </div>
+            </div>
+            <ul id="animeList"></ul>
+        </section>
+
+       <!-- Interface des statistiques -->
+<section id="statisticsSection" style="display: none;">
+    <h2>Statistiques</h2>
+    
+    <label for="timeUnitSelect"></label>
+    <select id="timeUnitSelect" onchange="updateStatistics()">
+        <option value="minutes">Minutes</option>
+        <option value="hours">Heures</option>
+        <option value="days">Jours</option>
+    </select>
+
+    <!-- Tableau pour les Animes -->
+    <h3></h3>
+    <table id="animeStatisticsTable">
+        <tr>
+            <th>Statistique: Anime</th>
+            <th>Valeur</th>
+        </tr>
+        <tr>
+            <td>Nombre de séries vues</td>
+            <td><span id="countSeries">0</span></td>
+        </tr>
+        <tr>
+            <td>Nombre d'épisodes vus</td>
+            <td><span id="totalAnimeEpisodes">0</span></td>
+        </tr>
+        <tr>
+            <td>Temps de visionnage</td>
+            <td><span id="totalAnimeWatchTime">0</span></td>
+        </tr>
+    </table>
+
+    <!-- Tableau pour les Webtoons -->
+    <h3></h3>
+    <table id="webtoonStatisticsTable">
+        <tr>
+            <th>Statistique: Webtoon</th>
+            <th>Valeur</th>
+        </tr>
+        <tr>
+            <td>Nombre de Webtoons vus</td>
+            <td><span id="countWebtoons">0</span></td>
+        </tr>
+        <tr>
+            <td>Nombre d'épisodes vus</td>
+            <td><span id="totalWebtoonEpisodes">0</span></td>
+        </tr>
+        <tr>
+            <td>Temps de lecture</td>
+            <td><span id="totalWebtoonWatchTime">0</span></td>
+        </tr>
+    </table>
+
+    <!-- Tableau pour les Films -->
+    <h3></h3>
+    <table id="movieStatisticsTable">
+        <tr>
+            <th>Statistique: Film</th>
+            <th>Valeur</th>
+        </tr>
+        <tr>
+            <td>Nombre de films vus</td>
+            <td><span id="countFilms">0</span></td>
+        </tr>
+        <tr>
+            <td>Temps de visionnage</td>
+            <td><span id="totalMovieWatchTime">0</span></td>
+        </tr>
+    </table>
+</section>
+
+        <!-- Section d'importation et d'exportation -->
+        <div id="importExportSection">
+            <div style="margin-bottom: 10px;">
+                <button id="importButton" onclick="document.getElementById('fileInput').click()">Importer</button>
+                <input type="file" id="fileInput" accept=".xlsx" style="display: none;" onchange="loadAnimeFromFile(event)">
+                <button id="importButtonJSON" onclick="document.getElementById('jsonInput').click()">Importer JSON</button>
+                <input type="file" id="jsonInput" accept=".json" style="display: none;" onchange="loadAnimeFromJSON(event)">
+            </div>
+            <div style="margin-bottom: 10px;">
+                <button id="exportButton" onclick="exportAnimeList()">Exporter</button>
+                <button id="exportButtonJSON" onclick="exportAnimeImages()">Exporter JSON</button>
+            </div>
+            <div>
+                <button id="clearLocalStorageButton" onclick="clearLocalStorage()">Vider le LocalStorage</button>
+            </div>
+        </div>
+
+        <!-- Fenêtre modale -->
+        <div id="modal" class="modal" style="display:none;">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <div id="modalImageContainer" style="text-align: center;">
+                    <img id="animeImageDisplay" src="" alt="Image de l'Anime"
+                        style="max-width: 100%; border-radius: 8px; margin-bottom: 20px;">
+                </div>
+                <table id="modalTable" style="width: 100%; border-collapse: collapse;">
+                    <tbody>
+                        <tr>
+                            <th>Titre</th>
+                            <td id="animeTitle"></td>
+                        </tr>
+                        <tr>
+                            <th>Type</th>
+                            <td id="animeTypeDisplay"></td>
+                        </tr>
+                        <tr>
+                            <th>Statut</th>
+                            <td id="animeStatusDisplay"></td>
+                        </tr>
+                        <tr>
+                            <th>Nombre d'épisodes</th>
+                            <td id="animeEpisodesDisplay"></td>
+                        </tr>
+                        <tr>
+                            <th>Graphismes</th>
+                            <td id="animeGraphicsRatingDisplay"></td>
+                        </tr>
+                        <tr>
+                            <th>Personnages</th>
+                            <td id="animeCharactersRatingDisplay"></td>
+                        </tr>
+                        <tr>
+                            <th>Histoire</th>
+                            <td id="animeStoryRatingDisplay"></td>
+                        </tr>
+                        <tr>
+                            <th>Émotion</th>
+                            <td id="animeEmotionRatingDisplay"></td>
+                        </tr>
+                        <tr>
+                            <th>Évaluation Générale</th>
+                            <td id="animeGeneralRatingDisplay"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div style="text-align: center; margin-top: 20px;">
+                    <button id="editButton" style="margin-right: 10px;" onclick="enableEditing()">Modifier</button>
+                    <button id="saveButton" style="display:none;" onclick="saveChanges()">Sauvegarder</button>
+                    <button id="deleteButton" style="display:none;" onclick="deleteAnime()">Supprimer</button>
+                </div>
+                <div style="margin-top: 20px;">
+                    <input type="file" id="editImageInput" accept="image/*" style="display: none;" />
+                    <button id="changeImageButton" style="display: none;" onclick="document.getElementById('editImageInput').click()">Changer l'image</button>
+                    <div id="currentImageContainer" style="text-align: center; margin-top: 10px;">
+                        <img id="currentImage" src="" alt="" style="max-width: 100%;" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="script.js"></script>
+    </div>
+</body>
+
+</html>
