@@ -13,7 +13,7 @@ body {
 }
 
 .container {
-    max-width: 800px;
+    max-width: 800px; 
     margin: auto;
     padding: 20px;
     box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
@@ -52,7 +52,7 @@ button:hover {
 
 .card {
     background-color: #29292900; /* Couleur de fond des cartes */
-    padding: 20px;
+    padding: 15px;
     border-radius: 10px; /* Coins arrondis */
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0); /* Ombre douce */
     margin-bottom: 20px; /* Espace entre les cartes */
@@ -83,7 +83,7 @@ button:hover {
     display: none; /* Masquer le menu déroulant par défaut */
     position: absolute;
     background-color: #3a3a3a; /* Couleur de fond du menu déroulant */
-    min-width: 16px; /* Largeur minimale du menu déroulant */
+    min-width: 160px; /* Largeur minimale du menu déroulant */
     z-index: 1;
     border-radius: 5px; /* Coins arrondis */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Ombre douce pour le menu */
