@@ -83,7 +83,7 @@ button:hover {
     display: none; /* Masquer le menu déroulant par défaut */
     position: absolute;
     background-color: #3a3a3a; /* Couleur de fond du menu déroulant */
-    min-width: 160px; /* Largeur minimale du menu déroulant */
+    min-width: 16px; /* Largeur minimale du menu déroulant */
     z-index: 1;
     border-radius: 5px; /* Coins arrondis */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Ombre douce pour le menu */
@@ -233,7 +233,7 @@ select:focus {
 }
 
 button {
-    width: 5px; /* Largeur uniforme pour tous les boutons */
+    width: 100px; /* Largeur uniforme pour tous les boutons */
     padding: 5px; /* Espacement intérieur pour un meilleur look */
     margin: 5px; /* Espacement entre les boutons */
     cursor: pointer; /* Curseur de pointeur pour les boutons */
