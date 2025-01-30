@@ -234,7 +234,7 @@ select:focus {
 
 button {
     width: 95px; /* Largeur uniforme pour tous les boutons */
-    padding: 10px; /* Espacement intérieur pour un meilleur look */
+    padding: 5px; /* Espacement intérieur pour un meilleur look */
     margin: 5px; /* Espacement entre les boutons */
     cursor: pointer; /* Curseur de pointeur pour les boutons */
 }
