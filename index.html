@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AnimeListe</title>
+
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -12,7 +12,7 @@
 
 <body>
     <div class="container">
-        <h1>AnimeListe</h1>
+        
 
         <!-- Navigation -->
         <!-- Barre de Menu en Bas -->
@@ -109,7 +109,7 @@
             </div>
             
             <div class="dropdown">
-                <button class="dropbtn" id="filterButton">Filtrer</button>
+                <button class="dropbtn" id="filterButton">Statut</button>
                 <div class="dropdown-content">
                     <a href="#" onclick="filterAnime('en cours')">En Cours</a>
                     <a href="#" onclick="filterAnime('inconnu')">Inconnu</a>
@@ -118,7 +118,7 @@
             </div>
             
             <div class="dropdown">
-                <button class="dropbtn" id="filterTypeButton">Filtrer par Type</button>
+                <button class="dropbtn" id="filterTypeButton">Type</button>
                 <div class="dropdown-content">
                     <a href="#" onclick="filterType('série')">Série</a>
                     <a href="#" onclick="filterType('film')">Film</a>
@@ -202,6 +202,7 @@
 
         <!-- Section d'importation et d'exportation -->
         <div id="importExportSection">
+            <h2>Import/Export</h2>
             <div style="margin-bottom: 10px;">
                 <button id="importButton" onclick="document.getElementById('fileInput').click()">Importer</button>
                 <input type="file" id="fileInput" accept=".xlsx" style="display: none;" onchange="loadAnimeFromFile(event)">
