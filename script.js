@@ -421,31 +421,31 @@ function sortAnime(criteria) {
     // Modifier le texte du bouton en fonction du critère de tri choisi  
     switch(criteria) {
         case 'alpha':
-            sortButton.textContent = 'Trié : Alphabétique';
+            sortButton.textContent = 'Alphabétique';
             animeList.sort((a, b) => a.name.localeCompare(b.name)); // Tri alphabétique  
             break;
         case 'emotion':
-            sortButton.textContent = 'Trié : Émotion';
+            sortButton.textContent = 'Émotion';
             animeList.sort((a, b) => b.ratings.emotion - a.ratings.emotion); // Tri par émotion (décroissant)
             break;
         case 'story':
-            sortButton.textContent = 'Trié : Histoire';
+            sortButton.textContent = 'Histoire';
             animeList.sort((a, b) => b.ratings.story - a.ratings.story); // Tri par histoire (décroissant)
             break;
         case 'graphics':
-            sortButton.textContent = 'Trié : Graphismes';
+            sortButton.textContent = 'Graphismes';
             animeList.sort((a, b) => b.ratings.graphics - a.ratings.graphics); // Tri par graphismes (décroissant)
             break;
         case 'characters':
-            sortButton.textContent = 'Trié : Personnages';
+            sortButton.textContent = 'Personnages';
             animeList.sort((a, b) => b.ratings.characters - a.ratings.characters); // Tri par personnages (décroissant)
             break;
         case 'general':
-            sortButton.textContent = 'Trié : Général';
+            sortButton.textContent = 'Général';
             animeList.sort((a, b) => b.ratings.general - a.ratings.general); // Tri par général (décroissant)
             break;
         case 'average':
-            sortButton.textContent = 'Trié : Moyenne';
+            sortButton.textContent = 'Moyenne';
             animeList.sort((a, b) => {
                 const averageA = (parseFloat(a.ratings.graphics) + 
                                   parseFloat(a.ratings.characters) + 
@@ -613,13 +613,13 @@ function filterAnime(status) {
     const filterButton = document.getElementById('filterButton');
     switch(status) {
         case 'en cours':
-            filterButton.textContent = 'Filtré : En Cours';
+            filterButton.textContent = 'En Cours';
             break;
         case 'inconnu':
-            filterButton.textContent = 'Filtré : Inconnu';
+            filterButton.textContent = 'Inconnu';
             break;
         case 'tous':
-            filterButton.textContent = 'Filtrer';
+            filterButton.textContent = 'Statut';
             break;
     }
 
@@ -675,16 +675,16 @@ function filterType(type) {
     const filterTypeButton = document.getElementById('filterTypeButton');
     switch(type) {
         case 'série':
-            filterTypeButton.textContent = 'Filtré par Type : Série';
+            filterTypeButton.textContent = 'Série';
             break;
         case 'film':
-            filterTypeButton.textContent = 'Filtré par Type : Film';
+            filterTypeButton.textContent = 'Film';
             break;
         case 'webtoon':
-            filterTypeButton.textContent = 'Filtré par Type : Webtoon';
+            filterTypeButton.textContent = 'Webtoon';
             break;
         case 'tout':
-            filterTypeButton.textContent = 'Filtrer par Type';
+            filterTypeButton.textContent = 'Type';
             break;
     }
 
