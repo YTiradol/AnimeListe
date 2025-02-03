@@ -20,6 +20,7 @@ function showAddAnime() {
     document.getElementById('animeListSection').style.display = 'none';
     document.getElementById('statisticsSection').style.display = 'none';
     document.getElementById('importExportSection').style.display = 'none';
+    watchingAnimeListSection.style.display = 'none'; // Cacher la section des animes en visionnage
     clearInputs(); // Nettoyer les champs d'ajout  
 }
 
@@ -28,6 +29,7 @@ function showAnimeList() {
     document.getElementById('animeListSection').style.display = 'block';
     document.getElementById('statisticsSection').style.display = 'none';
     document.getElementById('importExportSection').style.display = 'none';
+    watchingAnimeListSection.style.display = 'none'; // Cacher la section des animes en visionnage
     renderAnimeList(); // Rendre à jour la liste à chaque fois que l'on l'affiche  
 }
 
@@ -36,6 +38,7 @@ function showStatistics() {
     document.getElementById('animeListSection').style.display = 'none';
     document.getElementById('statisticsSection').style.display = 'block';
     document.getElementById('importExportSection').style.display = 'none';
+    watchingAnimeListSection.style.display = 'none'; // Cacher la section des animes en visionnage
     updateStatistics(); // Mettre à jour les statistiques à chaque affichage  
 }
 
@@ -43,6 +46,7 @@ function showImportExport() {
     document.getElementById('addAnimeSection').style.display = 'none';
     document.getElementById('animeListSection').style.display = 'none';
     document.getElementById('statisticsSection').style.display = 'none';
+    watchingAnimeListSection.style.display = 'none'; // Cacher la section des animes en visionnage
     document.getElementById('importExportSection').style.display = 'block'; // Afficher la section d'importation et d'exportation  
 }
 
@@ -128,11 +132,16 @@ function renderAnimeList() {
     const animeListElement = document.getElementById('animeList');
     animeListElement.innerHTML = '';
 
-    animeList.forEach((anime, index) => {
+    // Filtrer la liste pour exclure les animes en visionnage  
+    const filteredAnimeList = animeList.filter(anime => anime.status !== 'en visionnage');
+
+    // Vérifier si la liste filtrée est vide  
+   
+    filteredAnimeList.forEach((anime) => {
         const li = document.createElement('li');
         li.textContent = `${anime.name} `; // Afficher le nom de l'anime
 
-        // Calculer la moyenne des notes 
+        // Calculer la moyenne des notes  
         const averageRating = (
             (parseFloat(anime.ratings.graphics) +
             parseFloat(anime.ratings.characters) +
@@ -150,12 +159,13 @@ function renderAnimeList() {
             li.classList.add('bronze'); // Classe pour le bronze  
         }
 
-        // Afficher uniquement la note à droite  
+        // Afficher la note à droite  
         li.innerHTML += `<span class="rating">${averageRating}</span>`; // Ajouter la note dans un span
 
         // Écouter le clic pour afficher la fenêtre modale  
         li.addEventListener('click', () => {
-            openModal(index); // Passer l'index de l'anime  
+            const indexInOriginalList = animeList.findIndex(a => a.name === anime.name); // Trouver l'index original  
+            openModal(indexInOriginalList); // Passer l'index de l'anime  
         });
 
         animeListElement.appendChild(li);
@@ -252,7 +262,7 @@ function enableEditing() {
                 <select id="editType">
                     <option value="série" ${anime.type === 'série' ? 'selected' : ''}>Série</option>
                     <option value="film" ${anime.type === 'film' ? 'selected' : ''}>Film</option>
-                    <option value="webtoon" ${anime.type === 'webtoon' ? 'selected' : ''}>Webtoon</option> <!-- Ajout de l'option webtoon -->
+                    <option value="webtoon" ${anime.type === 'webtoon' ? 'selected' : ''}>Webtoon</option>
                 </select>
             </td>
         </tr>
@@ -262,6 +272,7 @@ function enableEditing() {
                 <select id="editStatus">
                     <option value="fini" ${anime.status === 'fini' ? 'selected' : ''}>Fini</option>
                     <option value="en cours" ${anime.status === 'en cours' ? 'selected' : ''}>En cours</option>
+                    <option value="en visionnage" ${anime.status === 'en visionnage' ? 'selected' : ''}>En visionnage</option> <!-- Nouvelle option -->
                     <option value="inconnu" ${anime.status === 'inconnu' ? 'selected' : ''}>Inconnu</option>
                 </select>
             </td>
@@ -299,7 +310,7 @@ function saveChanges() {
     // Récupération des valeurs des champs d'édition  
     const editedEpisodes = parseInt(document.getElementById('editEpisodes').value, 10); // Conversion en entier  
     const editedType = document.getElementById('editType').value; // Récupérer le type édité  
-    const editedStatus = document.getElementById('editStatus').value;
+    const editedStatus = document.getElementById('editStatus').value; // Récupérer le statut édité  
     const editedGraphics = parseFloat(document.getElementById('editGraphics').value); // Conversion en float  
     const editedCharacters = parseFloat(document.getElementById('editCharacters').value); // Conversion en float  
     const editedStory = parseFloat(document.getElementById('editStory').value); // Conversion en float  
@@ -328,7 +339,7 @@ function saveChanges() {
             // Mettre à jour les informations de l'anime  
             currentAnime.episodes = editedEpisodes; // Assurez-vous que c'est un nombre  
             currentAnime.type = editedType; // Mettre à jour le type  
-            currentAnime.status = editedStatus;
+            currentAnime.status = editedStatus; // Mettre à jour le statut  
             currentAnime.ratings.graphics = editedGraphics; // Assurez-vous que c'est un nombre  
             currentAnime.ratings.characters = editedCharacters; // Assurez-vous que c'est un nombre  
             currentAnime.ratings.story = editedStory; // Assurez-vous que c'est un nombre  
@@ -345,7 +356,7 @@ function saveChanges() {
         // Si aucune nouvelle image n'est sélectionnée, simplement sauvegarder  
         currentAnime.episodes = editedEpisodes; // Assurez-vous que c'est un nombre  
         currentAnime.type = editedType; // Mettre à jour le type  
-        currentAnime.status = editedStatus;
+        currentAnime.status = editedStatus; // Mettre à jour le statut  
         currentAnime.ratings.graphics = editedGraphics; // Assurez-vous que c'est un nombre  
         currentAnime.ratings.characters = editedCharacters; // Assurez-vous que c'est un nombre  
         currentAnime.ratings.story = editedStory; // Assurez-vous que c'est un nombre  
@@ -704,6 +715,76 @@ function toggleMenu() {
     } else {
         menuModal.style.display = 'none'; // Fermer le menu  
     }
+}
+
+function showWatchingAnimeList() {
+    const watchingAnimeListSection = document.getElementById('watchingAnimeListSection');
+    const animeListSection = document.getElementById('animeListSection');
+    const statisticsSection = document.getElementById('statisticsSection');
+    const importExportSection = document.getElementById('importExportSection');
+    
+    // Cacher les autres sections  
+    animeListSection.style.display = 'none';
+    statisticsSection.style.display = 'none';
+    importExportSection.style.display = 'none';
+    document.getElementById('addAnimeSection').style.display = 'none';
+
+    // Afficher la section des animes en visionnage  
+    watchingAnimeListSection.style.display = 'block';
+
+    // Rendre la liste des animes en visionnage  
+    renderWatchingAnimeList();
+}
+
+function renderWatchingAnimeList() {
+    const watchingAnimeListElement = document.getElementById('watchingAnimeList');
+    watchingAnimeListElement.innerHTML = '';
+
+    const watchingAnimeList = animeList.filter(anime => anime.status === 'en visionnage');
+
+    watchingAnimeList.forEach((anime) => {
+        const li = document.createElement('li');
+        li.style.cursor = 'pointer';
+        li.style.padding = '15px'; // Augmentation du padding  
+        li.style.border = '1px solid #444'; // Bordure des éléments de liste  
+        li.style.marginBottom = '10px'; // Espace entre les éléments de liste  
+        li.style.backgroundColor = 'rgba(4, 146, 115, 0.8)'; // Couleur de fond des éléments de liste  
+        li.style.borderRadius = '10px'; // Coins arrondis  
+        li.style.display = 'flex'; // Utilisation du flexbox pour aligner le texte et la note  
+        li.style.justifyContent = 'space-between'; // Espacement entre le titre et la note
+        
+        li.textContent = `${anime.name} `; // Afficher le nom de l'anime
+
+        const averageRating = (
+            (parseFloat(anime.ratings.graphics) +
+            parseFloat(anime.ratings.characters) +
+            parseFloat(anime.ratings.story) +
+            parseFloat(anime.ratings.emotion) +
+            parseFloat(anime.ratings.general)) / 5  
+        ).toFixed(2);
+
+        li.innerHTML += `<span class="rating">${averageRating}</span>`;
+        
+        li.addEventListener('click', () => {
+            const indexInOriginalList = animeList.findIndex(a => a.name === anime.name);
+            openModal(indexInOriginalList);
+        });
+
+        // Appliquez les styles au survol  
+        li.addEventListener('mouseover', () => {
+            li.style.backgroundColor = 'rgba(6, 101, 81, 0.9)'; // Couleur de fond au survol  
+            li.style.transform = 'translateY(-2px)'; // Légère élévation au survol  
+            li.style.boxShadow = '0 4px 10px rgba(0, 0, 0, 0.5)'; // Ombre au survol  
+        });
+
+        li.addEventListener('mouseout', () => {
+            li.style.backgroundColor = 'rgba(4, 146, 115, 0.8)'; // Retour à la couleur de fond initiale  
+            li.style.transform = 'none'; // Rétablir l'élévation  
+            li.style.boxShadow = 'none'; // Supprimer l'ombre au survol  
+        });
+
+        watchingAnimeListElement.appendChild(li);
+    });
 }
 
 // Initialiser le chargement des anime au démarrage  
