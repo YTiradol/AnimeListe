@@ -13,7 +13,7 @@ body {
 }
 
 .container {
-    max-width: 800px; 
+    max-width: 800px;
     margin: auto;
     padding: 20px;
     box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
@@ -52,7 +52,7 @@ button:hover {
 
 .card {
     background-color: #29292900; /* Couleur de fond des cartes */
-    padding: 15px;
+    padding: 20px;
     border-radius: 10px; /* Coins arrondis */
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0); /* Ombre douce */
     margin-bottom: 20px; /* Espace entre les cartes */
@@ -234,7 +234,7 @@ select:focus {
 
 button {
     width: 100px; /* Largeur uniforme pour tous les boutons */
-    padding: 5px; /* Espacement intérieur pour un meilleur look */
+    padding: 10px; /* Espacement intérieur pour un meilleur look */
     margin: 5px; /* Espacement entre les boutons */
     cursor: pointer; /* Curseur de pointeur pour les boutons */
 }
@@ -330,3 +330,4 @@ h3 {
     font-size: 12px; /* Taille du texte */
     display: block; /* Afficher le texte en bloc pour le centrer */
 }
+
